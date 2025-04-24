@@ -624,7 +624,7 @@ define([
       // Add original items to combined array
       orginalSKUArray.forEach((originalItem) => {
         combinedArray.push({
-          isSKU: true,
+          isSubstitute: false,
           itemId: originalItem.item, // Assign original item as itemId
           distance: originalItem.distance,
           SKUPCK: originalItem.SKUPCK,
@@ -656,25 +656,7 @@ define([
           });
         });
       }
-
-      // Output the final combined array
-      // combinedArray.sort((a, b) => {
-      //   // Sort by distance (ascending)
-      //   if (a.distance !== b.distance) {
-      //     return a.distance - b.distance;
-      //   }
-
-      //   // Sort by packing unit (pck or SKUPCK/linePCK) in descending order
-      //   let PCKA = a.SKUPCK !== undefined ? a.linePCK : a.SKUPCK;
-      //   let PCKB = b.SKUPCK !== undefined ? b.linePCK : b.SKUPCK;
-
-      //   if (PCKA !== PCKB) {
-      //     return PCKB - PCKA; // Higher PCK value comes first
-      //   }
-
-      //   // Prioritize original SKUs over substitutes (isSubstitute: false comes first)
-      //   return (b.isSubstitute ? 1 : 0) - (a.isSubstitute ? 1 : 0);
-      // });
+      log.debug("Combined Array Before Sort",combinedArray);
       combinedArray.sort((a, b) => {
         // Sort by distance (ascending)
         if (a.distance !== b.distance) {
@@ -706,7 +688,7 @@ define([
       // Step 2: Group by box key (distance + locationID + substitutePriority)
       const groupedBoxes = {};
 
-      log.debug("combinedArray", combinedArray);
+    //  log.debug("combinedArray", combinedArray);
       combinedArray.forEach((item) => {
         const distance = item.distance;
         const locationID =
